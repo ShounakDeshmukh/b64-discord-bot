@@ -31,14 +31,14 @@ async fn handler(bot: &ProvidedBot, msg: Message) {
         "" => resp = format!("Empty input I shall do nothing"),
         "encode" => {
             let string = message[1..].join(" ");
-            let encoded = general_purpose::STANDARD_NO_PAD.encode(&string);
+            let encoded = general_purpose::STANDARD.encode(&string);
             resp = format!(
                 "Your original string was {string} \n Your base64 encoded string is {encoded} \n"
             )
         }
         "decode" => {
             let string = message[1..].join(" ");
-            let decoded = general_purpose::STANDARD_NO_PAD.decode(&string).unwrap();
+            let decoded = general_purpose::STANDARD.decode(&string).unwrap();
 
             match String::from_utf8(decoded) {
                 Ok(decoded_string) => {
