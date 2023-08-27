@@ -40,7 +40,7 @@ async fn handler(bot: &ProvidedBot, msg: Message) {
             let string = message[1..].join(" ");
             let decoded = general_purpose::STANDARD_NO_PAD.decode(&string).unwrap();
 
-            match std::str::from_utf8(&decoded) {
+            match String::from_utf8(decoded) {
                 Ok(decoded_string) => {
                     resp = format!(
                     "Your original string was {string} \n Your base64 decoded string is {decoded_string} \n"
@@ -55,7 +55,7 @@ async fn handler(bot: &ProvidedBot, msg: Message) {
     }
 
     if message.len() < 2 {
-        resp = format!("Invalid input")
+        resp = format!("Please format your request in the form <Method> <Text>")
     }
 
     let channel_id = msg.channel_id;
