@@ -37,17 +37,22 @@ async fn handler(bot: &ProvidedBot, msg: Message) {
             )
         }
         "decode" => {
-            let string = message[1..].join(" ");
-            let decoded = general_purpose::STANDARD.decode(&string).unwrap();
+            let string = message[1].trim().to_owned();
+            let decoded = general_purpose::STANDARD.decode(string.clone());
 
-            match String::from_utf8(decoded) {
-                Ok(decoded_string) => {
-                    resp = format!(
-                    "Your original string was {string} \n Your base64 decoded string is {decoded_string} \n"
-                )
-                }
-                Err(_) => resp = format!("Something went wrong while decoding"),
-            };
+            match decoded{
+                Ok(decoded_vec) =>{
+                    match String::from_utf8(decoded_vec){
+                    Ok(decoded_str)=> {resp = format!(
+                    "Your original string was {string} \n Your base64 decoded string is {decoded_str} \n"
+                )}
+                Err(_) => resp = format!("Something went wrong while converting to string"),
+            
+            }}
+                Err(_) => resp = format!("Something went wrong while while decoding string"),
+                 }
+
+            
         }
         _ => {
             resp = format!("Invalid method only encode and decode are accepted methods the case does not matter");
