@@ -14,8 +14,8 @@ pub async fn run() -> anyhow::Result<()> {
 async fn handler(bot: &ProvidedBot, msg: Message) {
     logger::init();
     let discord = bot.get_client();
-    let binding = msg.content.trim().to_lowercase();
-    let message: Vec<_> = binding.split(' ').collect();
+    let binding = msg.content.trim();
+    let message: Vec<&str> = binding.split(' ').collect();
     let mut resp;
 
     if msg.author.bot {
@@ -27,7 +27,7 @@ async fn handler(bot: &ProvidedBot, msg: Message) {
         return;
     }
 
-    match message[0] {
+    match message[0].to_lowercase().as_str() {
         "" => resp = format!("Empty input I shall do nothing"),
         "encode" => {
             let string = message[1..].join(" ");
